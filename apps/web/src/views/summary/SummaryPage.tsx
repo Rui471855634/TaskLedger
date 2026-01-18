@@ -373,7 +373,6 @@ export function SummaryPage() {
                           <div className={styles.dayItems}>
                             {list.slice(0, 4).map((t) => {
                               const mod = moduleById.get(t.moduleId)
-                              const ts = itemMode === 'completed' ? t.completedAt! : t.createdAt
                               return (
                                 <button
                                   key={t.id}
