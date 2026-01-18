@@ -9,7 +9,8 @@
     "dev": "npm_config_cache=.npm-cache npm run dev -w apps/web",
     "build": "npm_config_cache=.npm-cache npm run build -w apps/web",
     "preview": "npm_config_cache=.npm-cache npm run preview -w apps/web",
-    "lint": "npm_config_cache=.npm-cache npm run lint -w apps/web"
+    "lint": "npm_config_cache=.npm-cache npm run lint -w apps/web",
+    "bundle": "node tools/make-release-bundle.mjs"
   }
 }
 
