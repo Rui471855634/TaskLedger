@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
+import { format } from 'date-fns'
 import type { ModuleId, WorkModule, WorkTask } from '../../../storage/db'
-import { createTask, updateTask } from '../../../storage/ops'
+import { createTask, deleteTask, updateTask } from '../../../storage/ops'
 import styles from './TaskDrawer.module.css'
 
 export function TaskDrawer(props: {
@@ -79,6 +80,17 @@ export function TaskDrawer(props: {
     }
   }
 
+  async function handleDelete() {
+    if (!props.task) return
+    if (!window.confirm('确定要删除这个任务吗？')) return
+    try {
+      await deleteTask(props.task.id)
+      props.onClose()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
+    }
+  }
+
   return (
     <div className={styles.backdrop} onClick={props.onClose} role="presentation">
       <aside className={styles.drawer} onClick={(e) => e.stopPropagation()}>
@@ -93,6 +105,13 @@ export function TaskDrawer(props: {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="例如：开会"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && canSave) {
+                  e.preventDefault()
+                  void save()
+                }
+              }}
             />
           </label>
 
@@ -106,18 +125,49 @@ export function TaskDrawer(props: {
               rows={10}
             />
           </label>
+
+          {props.task ? (
+            <div className={styles.timeInfo}>
+              <div className={styles.timeRow}>
+                创建于 {format(props.task.createdAt, 'yyyy-MM-dd HH:mm')}
+              </div>
+              {props.task.completedAt ? (
+                <div className={styles.timeRow}>
+                  完成于 {format(props.task.completedAt, 'yyyy-MM-dd HH:mm')}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         <div className={styles.footer}>
-          <button className={styles.ghostBtn} type="button" onClick={props.onClose} disabled={saving}>
-            取消
-          </button>
-          <button className={styles.primaryBtn} type="button" onClick={() => void save()} disabled={!canSave}>
-            保存
-          </button>
+          {props.mode === 'edit' ? (
+            <button
+              className={styles.dangerBtn}
+              type="button"
+              onClick={() => void handleDelete()}
+              disabled={saving}
+            >
+              删除
+            </button>
+          ) : (
+            <div />
+          )}
+          <div className={styles.footerRight}>
+            <button className={styles.ghostBtn} type="button" onClick={props.onClose} disabled={saving}>
+              取消
+            </button>
+            <button
+              className={styles.primaryBtn}
+              type="button"
+              onClick={() => void save()}
+              disabled={!canSave}
+            >
+              保存
+            </button>
+          </div>
         </div>
       </aside>
     </div>
   )
 }
-

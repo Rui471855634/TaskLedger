@@ -1,51 +1,69 @@
 .shell {
   height: 100vh;
   display: grid;
-  grid-template-rows: 56px 1fr;
-  background: #f6f7fb;
-  color: rgba(15, 23, 42, 0.92);
+  grid-template-rows: 64px 1fr; /* 增加 Header 高度让空间更舒展 */
+  background: transparent; /* body 已经有背景了 */
+  color: #1e293b;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+  padding: 0 24px;
+  /* 去掉生硬的 border，改用柔和的投影 */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  /* 极细的顶部高光边框 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 }
 
 .brand {
   font-weight: 700;
-  letter-spacing: 0.4px;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  background: linear-gradient(to right, #1e293b, #475569);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .nav {
   display: flex;
   gap: 8px;
+  background: rgba(241, 245, 249, 0.5);
+  padding: 4px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .link,
 .active {
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 6px 16px;
+  border-radius: 99px;
   text-decoration: none;
-  color: rgba(15, 23, 42, 0.72);
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .link:hover {
-  background: rgba(2, 6, 23, 0.04);
+  color: #334155;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .active {
-  background: rgba(99, 102, 241, 0.16);
-  color: rgba(15, 23, 42, 0.92);
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  font-weight: 600;
 }
 
 .main {
   min-height: 0;
   overflow: hidden;
+  position: relative;
 }
-

@@ -31,7 +31,8 @@ export function ModuleLane(props: {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  }
+    '--module-color': props.module.color,
+  } as React.CSSProperties
 
   const todoContainerId = containerId('todo', props.module.id)
   const doneContainerId = containerId('done', props.module.id)
@@ -50,10 +51,7 @@ export function ModuleLane(props: {
       style={style}
       className={clsx(styles.lane, isDragging && styles.dragging)}
     >
-      <header
-        className={styles.header}
-        style={{ background: `linear-gradient(180deg, ${props.module.color}33, transparent)` }}
-      >
+      <header className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.dragHandle} {...attributes} {...listeners} title="拖拽模块排序">
             ⋮⋮
@@ -92,10 +90,20 @@ export function ModuleLane(props: {
         </div>
 
         <div className={styles.doneBlock}>
-          <button className={styles.doneToggle} type="button" onClick={props.onToggleDoneExpanded}>
-            <span>已完成</span>
-            <span className={styles.doneMeta}>
-              {doneCount} {props.isDoneExpanded ? '▾' : '▸'}
+          <button
+            className={clsx(styles.doneToggle, !props.isDoneExpanded && styles.doneToggleSticky)}
+            type="button"
+            onClick={props.onToggleDoneExpanded}
+            aria-expanded={props.isDoneExpanded}
+          >
+            <span className={styles.doneLeft}>
+              <span>已完成</span>
+              <span className={clsx(styles.doneCount, doneCount > 0 && styles.doneCountActive)}>
+                {doneCount}
+              </span>
+            </span>
+            <span className={styles.doneChevron} aria-hidden>
+              {props.isDoneExpanded ? '▾' : '▸'}
             </span>
           </button>
 
@@ -125,4 +133,3 @@ export function ModuleLane(props: {
     </section>
   )
 }
-

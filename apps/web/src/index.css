@@ -13,12 +13,15 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #f6f7fb;
-  color: rgba(15, 23, 42, 0.92);
+  /* 清新科技感渐变背景：极淡的冷灰色到淡蓝色的微妙过渡 */
+  background: linear-gradient(135deg, #f3f6f9 0%, #e6ebf5 100%);
+  background-attachment: fixed;
+  color: #1e293b; /* slate-800, 对比度更高更清晰 */
 }
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 input,

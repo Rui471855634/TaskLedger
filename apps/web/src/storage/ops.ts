@@ -6,27 +6,44 @@ function now() {
   return Date.now()
 }
 
-function normalizeOrders<T extends { id: string; order: number }>(items: T[]) {
-  return items
-    .slice()
-    .sort((a, b) => a.order - b.order)
-    .map((it, idx) => ({ ...it, order: idx }))
-}
-
 export async function ensureAtLeastOneModule() {
-  const count = await db().modules.count()
-  if (count > 0) return
-  const t = now()
-  const mod: WorkModule = {
-    id: newId('mod'),
-    // system default module (only created when database is empty)
-    name: '默认模块',
-    color: randomModuleColor(),
-    order: 0,
-    createdAt: t,
-    updatedAt: t,
-  }
-  await db().modules.add(mod)
+  // IMPORTANT: In React dev StrictMode, effects can run twice.
+  // Use a write transaction so concurrent calls don't create duplicates.
+  await db().transaction('rw', db().modules, db().tasks, async () => {
+    const moduleCount = await db().modules.count()
+    if (moduleCount === 0) {
+      const t = now()
+      const mod: WorkModule = {
+        id: newId('mod'),
+        // system default module (only created when database is empty)
+        name: '默认模块',
+        color: randomModuleColor(),
+        order: 0,
+        createdAt: t,
+        updatedAt: t,
+      }
+      await db().modules.add(mod)
+      return
+    }
+
+    // Cleanup: if there are NO tasks and modules are all system defaults,
+    // dedupe them down to a single default module.
+    const taskCount = await db().tasks.count()
+    if (taskCount !== 0) return
+
+    const mods = await db().modules.toArray()
+    const isSystemDefaultName = (name: string) => /^默认模块(\s*\d+)?$/.test(name.trim())
+    if (!mods.every((m) => isSystemDefaultName(m.name))) return
+    if (mods.length <= 1) return
+
+    const sorted = mods
+      .slice()
+      .sort((a, b) => a.order - b.order || a.createdAt - b.createdAt || a.id.localeCompare(b.id))
+    const keep = sorted[0]!
+    const toDelete = sorted.slice(1).map((m) => m.id)
+    await db().modules.bulkDelete(toDelete)
+    await db().modules.update(keep.id, { order: 0, updatedAt: now() })
+  })
 }
 
 export async function createModule(input?: Partial<Pick<WorkModule, 'name' | 'color'>>) {
@@ -56,6 +73,14 @@ export async function updateModule(moduleId: ModuleId, patch: Partial<Pick<WorkM
     })
 }
 
+export async function deleteModule(moduleId: ModuleId) {
+  await db().transaction('rw', db().modules, db().tasks, async () => {
+    await db().modules.delete(moduleId)
+    await db().tasks.where({ moduleId }).delete()
+    await ensureAtLeastOneModule()
+  })
+}
+
 export async function reorderModules(orderedModuleIds: ModuleId[]) {
   await db().transaction('rw', db().modules, async () => {
     const mods = await db().modules.toArray()
@@ -68,8 +93,9 @@ export async function reorderModules(orderedModuleIds: ModuleId[]) {
     // append any missing (shouldn't happen)
     for (const m of mods) if (!orderedModuleIds.includes(m.id)) merged.push(m)
 
-    const normalized = normalizeOrders(merged)
-    await db().modules.bulkPut(normalized.map((m) => ({ ...m, updatedAt: now() })))
+    // Normalize orders based on the NEW list sequence
+    const normalized = merged.map((m, idx) => ({ ...m, order: idx, updatedAt: now() }))
+    await db().modules.bulkPut(normalized)
   })
 }
 
@@ -108,6 +134,10 @@ export async function updateTask(taskId: TaskId, patch: Partial<Pick<WorkTask, '
       ...(patch.detail !== undefined ? { detail: patch.detail } : {}),
       updatedAt: now(),
     })
+}
+
+export async function deleteTask(taskId: TaskId) {
+  await db().tasks.delete(taskId)
 }
 
 export async function setTaskCompletion(taskId: TaskId, completed: boolean) {
@@ -201,4 +231,3 @@ export async function moveAndReorderTask(input: {
     }
   })
 }
-

@@ -35,26 +35,27 @@ export function TaskCard(props: {
         if (e.key === 'Enter') props.onOpen()
       }}
     >
-      <button
-        className={styles.check}
-        type="button"
-        aria-label={props.completed ? '标记为未完成' : '标记为已完成'}
-        onClick={(e) => {
-          e.stopPropagation()
-          props.onToggle(!props.completed)
-        }}
-      >
-        <span className={clsx(styles.dot, props.completed && styles.dotOn)} />
-      </button>
+      <div className={styles.topRow}>
+        <button
+          className={styles.check}
+          type="button"
+          aria-label={props.completed ? '标记为未完成' : '标记为已完成'}
+          onClick={(e) => {
+            e.stopPropagation()
+            props.onToggle(!props.completed)
+          }}
+        >
+          <span className={clsx(styles.dot, props.completed && styles.dotOn)} />
+        </button>
 
-      <div className={styles.content}>
         <div className={styles.title}>{props.task.title || '（未命名）'}</div>
-        {props.task.detail ? <div className={styles.detail}>{props.task.detail}</div> : null}
+
+        <div className={styles.drag} {...attributes} {...listeners} onClick={(e) => e.stopPropagation()}>
+          ⋮⋮
+        </div>
       </div>
 
-      <div className={styles.drag} {...attributes} {...listeners} onClick={(e) => e.stopPropagation()}>
-        ⋮⋮
-      </div>
+      {props.task.detail ? <div className={styles.detail}>{props.task.detail}</div> : null}
     </div>
   )
 }

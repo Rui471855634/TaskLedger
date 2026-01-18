@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { WorkModule } from '../../../storage/db'
-import { createModule, updateModule } from '../../../storage/ops'
+import { createModule, deleteModule, updateModule } from '../../../storage/ops'
 import { MACARON_COLORS, randomModuleColor } from '../../../utils/colors'
 import styles from './ModuleModal.module.css'
 
@@ -54,6 +54,17 @@ export function ModuleModal(props: {
     }
   }
 
+  async function handleDelete() {
+    if (!props.module) return
+    if (!window.confirm('确定要删除这个模块吗？该模块下的所有任务也会被删除。')) return
+    try {
+      await deleteModule(props.module.id)
+      props.onClose()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
+    }
+  }
+
   const canShow = props.open && (props.mode === 'create' || Boolean(props.module))
   if (!canShow) return null
 
@@ -71,7 +82,18 @@ export function ModuleModal(props: {
           {error ? <div className={styles.error}>{error}</div> : null}
           <label className={styles.label}>
             <div className={styles.labelText}>模块名称</div>
-            <input className={styles.input} value={name} onChange={(e) => setName(e.target.value)} />
+            <input
+              className={styles.input}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && canSave) {
+                  e.preventDefault()
+                  void save()
+                }
+              }}
+            />
           </label>
 
           <label className={styles.label}>
@@ -101,20 +123,33 @@ export function ModuleModal(props: {
         </div>
 
         <div className={styles.footer}>
-          <button className={styles.btn} type="button" onClick={props.onClose} disabled={saving}>
-            取消
-          </button>
-          <button
-            className={styles.primaryBtn}
-            type="button"
-            onClick={() => void save()}
-            disabled={!canSave}
-          >
-            保存
-          </button>
+          {props.mode === 'edit' ? (
+            <button
+              className={styles.dangerBtn}
+              type="button"
+              onClick={() => void handleDelete()}
+              disabled={saving}
+            >
+              删除
+            </button>
+          ) : (
+            <div />
+          )}
+          <div className={styles.footerRight}>
+            <button className={styles.btn} type="button" onClick={props.onClose} disabled={saving}>
+              取消
+            </button>
+            <button
+              className={styles.primaryBtn}
+              type="button"
+              onClick={() => void save()}
+              disabled={!canSave}
+            >
+              保存
+            </button>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-

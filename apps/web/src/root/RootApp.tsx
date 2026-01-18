@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/AppLayout'
 import { IndexedDbUnsupportedModal } from './components/IndexedDbUnsupportedModal'
+import { ToastProvider } from '../components/Toast'
 import { initDbOrThrow, isIndexedDbSupported } from '../storage/db'
 import { ensureAtLeastOneModule } from '../storage/ops'
 import { TasksPage } from '../views/tasks/TasksPage'
@@ -37,13 +38,14 @@ export function RootApp() {
   if (blocker) return blocker
 
   return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/summary" element={<SummaryPage />} />
-        <Route path="/" element={<Navigate to="/tasks" replace />} />
-      </Route>
-    </Routes>
+    <ToastProvider>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/summary" element={<SummaryPage />} />
+          <Route path="/" element={<Navigate to="/tasks" replace />} />
+        </Route>
+      </Routes>
+    </ToastProvider>
   )
 }
-

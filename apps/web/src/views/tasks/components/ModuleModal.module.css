@@ -5,6 +5,8 @@
   display: grid;
   place-items: center;
   padding: 24px;
+  backdrop-filter: blur(2px);
+  z-index: 1000;
 }
 
 .card {
@@ -87,56 +89,6 @@
   box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06) inset;
 }
 
-.btn {
-  border-radius: 12px;
-  border: 1px solid rgba(15, 23, 42, 0.14);
-  background: rgba(15, 23, 42, 0.04);
-  color: rgba(15, 23, 42, 0.86);
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background: rgba(15, 23, 42, 0.06);
-}
-
-.footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(15, 23, 42, 0.1);
-}
-
-.primaryBtn {
-  border-radius: 12px;
-  border: 1px solid rgba(15, 23, 42, 0.14);
-  background: rgba(99, 102, 241, 0.18);
-  color: rgba(15, 23, 42, 0.92);
-  padding: 10px 14px;
-  cursor: pointer;
-}
-
-.primaryBtn:hover {
-  background: rgba(99, 102, 241, 0.24);
-}
-
-.primaryBtn:disabled,
-.btn:disabled,
-.closeBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.error {
-  border-radius: 12px;
-  padding: 10px 10px;
-  border: 1px solid rgba(239, 68, 68, 0.22);
-  background: rgba(239, 68, 68, 0.06);
-  color: rgba(153, 27, 27, 0.92);
-  font-size: 13px;
-}
-
 .swatch[data-selected='true'] {
   box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.95),
@@ -163,3 +115,76 @@
   border: 1px solid rgba(15, 23, 42, 0.12);
 }
 
+.error {
+  border-radius: 12px;
+  padding: 10px 10px;
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  background: rgba(239, 68, 68, 0.06);
+  color: rgba(153, 27, 27, 0.92);
+  font-size: 13px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.footerRight {
+  display: flex;
+  gap: 10px;
+}
+
+.btn,
+.primaryBtn,
+.dangerBtn {
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn {
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(15, 23, 42, 0.04);
+  color: rgba(15, 23, 42, 0.86);
+}
+
+.btn:hover {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.primaryBtn {
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(99, 102, 241, 0.18);
+  color: rgba(15, 23, 42, 0.92);
+}
+
+.primaryBtn:hover {
+  background: rgba(99, 102, 241, 0.24);
+}
+
+.dangerBtn {
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: #fff1f2;
+  color: #ef4444;
+}
+
+.dangerBtn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.primaryBtn:disabled,
+.btn:disabled,
+.dangerBtn:disabled,
+.closeBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

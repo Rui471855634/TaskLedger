@@ -14,6 +14,7 @@ import {
 } from 'date-fns'
 import { db, type TaskId, type WorkModule, type WorkTask } from '../../storage/db'
 import { TaskDrawer } from '../tasks/components/TaskDrawer'
+import { useToast } from '../../components/Toast'
 import styles from './SummaryPage.module.css'
 
 type ViewMode = 'day' | 'week' | 'month'
@@ -72,7 +73,80 @@ function inPeriod(ts: number, p: Period) {
   return t >= p.start && t < p.endExclusive
 }
 
+function generateReport(
+  title: string,
+  start: Date,
+  endExclusive: Date,
+  tasks: WorkTask[],
+  modules: WorkModule[],
+) {
+  const moduleMap = new Map(modules.map((m) => [m.id, m]))
+  const inRange = (ts: number) => {
+    const d = new Date(ts)
+    return d >= start && d < endExclusive
+  }
+
+  const completed = tasks.filter((t) => t.completedAt && inRange(t.completedAt))
+  const uncompleted = tasks.filter((t) => {
+    if (!t.createdAt || !inRange(t.createdAt)) return false
+    return !t.completedAt || t.completedAt >= endExclusive.getTime()
+  })
+
+  const groupByModule = (list: WorkTask[]) => {
+    const groups = new Map<string, WorkTask[]>()
+    for (const t of list) {
+      const mName = moduleMap.get(t.moduleId)?.name ?? '未知模块'
+      if (!groups.has(mName)) groups.set(mName, [])
+      groups.get(mName)!.push(t)
+    }
+    return groups
+  }
+
+  const completedGroups = groupByModule(completed)
+  const uncompletedGroups = groupByModule(uncompleted)
+
+  let text = `# ${title} 总结\n\n`
+
+  const appendSection = (name: string, groups: Map<string, WorkTask[]>) => {
+    text += `## ${name}\n`
+    if (groups.size === 0) {
+      text += `(无)\n`
+    } else {
+      for (const [mName, list] of groups) {
+        text += `- ${mName}\n`
+        for (const t of list) {
+          let line = `  - ${t.title}`
+          if (t.detail) {
+            const desc = t.detail.trim().replace(/\n+/g, ' ')
+            if (desc) {
+              line += `：${desc}`
+            }
+          }
+          text += `${line}\n`
+        }
+      }
+    }
+    text += `\n`
+  }
+
+  appendSection('已完成', completedGroups)
+  text += `---\n\n`
+  appendSection('未完成', uncompletedGroups)
+
+  return text
+}
+
+function CopyIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+  )
+}
+
 export function SummaryPage() {
+  const { show } = useToast()
   const [viewMode, setViewMode] = useState<ViewMode>('day')
   const [itemMode, setItemMode] = useState<ItemMode>('completed')
   const [periodCount, setPeriodCount] = useState(12)
@@ -155,6 +229,14 @@ export function SummaryPage() {
     return res
   }, [itemMode, tasks])
 
+  function handleCopyReport(title: string, start: Date, endExclusive: Date) {
+    if (!tasks || !modules) return
+    const text = generateReport(title, start, endExclusive, tasks, modules)
+    void navigator.clipboard.writeText(text).then(() => {
+      show('总结报告已复制到剪贴板')
+    })
+  }
+
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
@@ -236,7 +318,16 @@ export function SummaryPage() {
                 <section key={m.key} className={styles.period}>
                   <div className={styles.periodHeader}>
                     <div className={styles.periodLabel}>{m.label}</div>
-                    <div className={styles.periodMeta}>{monthCount} 条</div>
+                    <div className={styles.periodActions}>
+                      <button
+                        className={styles.actionBtn}
+                        onClick={() => handleCopyReport(m.label, m.start, m.endExclusive)}
+                        title="复制月度总结"
+                      >
+                        <CopyIcon /> 总结
+                      </button>
+                      <div className={styles.periodMeta}>{monthCount} 条</div>
+                    </div>
                   </div>
 
                   <div className={styles.calendarHeader}>
@@ -266,25 +357,38 @@ export function SummaryPage() {
                         >
                           <div className={styles.dayHeader}>
                             <div className={styles.dayNum}>{format(d, 'd')}</div>
-                            {isToday ? <div className={styles.todayBadge}>今天</div> : null}
+                            <div className={styles.dayActions}>
+                              {!disabled && (
+                                <button
+                                  className={styles.miniActionBtn}
+                                  onClick={() => handleCopyReport(key, d, addDays(d, 1))}
+                                  title="复制日报"
+                                >
+                                  <CopyIcon />
+                                </button>
+                              )}
+                              {isToday ? <div className={styles.todayBadge}>今天</div> : null}
+                            </div>
                           </div>
                           <div className={styles.dayItems}>
                             {list.slice(0, 4).map((t) => {
                               const mod = moduleById.get(t.moduleId)
+                              const ts = itemMode === 'completed' ? t.completedAt! : t.createdAt
                               return (
                                 <button
                                   key={t.id}
                                   type="button"
                                   className={styles.pill}
                                   style={{
-                                    background: `${mod?.color ?? '#334155'}2b`,
-                                    borderColor: `${mod?.color ?? '#334155'}66`,
+                                    border: `1px solid ${mod?.color ?? '#cbd5e1'}40`,
                                   }}
                                   title={t.detail || undefined}
                                   onClick={() => setSelectedTaskId(t.id)}
                                 >
                                   <span className={styles.pillTitle}>{t.title || '（未命名）'}</span>
-                                  <span className={styles.pillModule}>{labelForModule(mod)}</span>
+                                  <div className={styles.pillRight} title={labelForModule(mod)}>
+                                    {labelForModule(mod)}
+                                  </div>
                                 </button>
                               )
                             })}
@@ -303,26 +407,42 @@ export function SummaryPage() {
               <section key={p.key} className={styles.period}>
                 <div className={styles.periodHeader}>
                   <div className={styles.periodLabel}>{p.label}</div>
-                  <div className={styles.periodMeta}>{itemsByPeriodKey[p.key]?.length ?? 0} 条</div>
+                  <div className={styles.periodActions}>
+                    <button
+                      className={styles.actionBtn}
+                      onClick={() => handleCopyReport(p.label, p.start, p.endExclusive)}
+                      title="复制总结"
+                    >
+                      <CopyIcon /> 总结
+                    </button>
+                    <div className={styles.periodMeta}>{itemsByPeriodKey[p.key]?.length ?? 0} 条</div>
+                  </div>
                 </div>
 
                 <div className={styles.items}>
                   {(itemsByPeriodKey[p.key] ?? []).map((t) => {
                     const mod = moduleById.get(t.moduleId)
+                    const ts = itemMode === 'completed' ? t.completedAt! : t.createdAt
+                    const mName = labelForModule(mod)
                     return (
                       <button
                         key={t.id}
                         type="button"
                         className={styles.item}
                         style={{
-                          background: `${mod?.color ?? '#334155'}22`,
-                          borderColor: `${mod?.color ?? '#334155'}55`,
+                          borderLeft: `3px solid ${mod?.color ?? '#94a3b8'}`,
                         }}
                         title={t.detail || undefined}
                         onClick={() => setSelectedTaskId(t.id)}
                       >
                         <div className={styles.itemLeft}>{t.title || '（未命名）'}</div>
-                        <div className={styles.itemRight}>{labelForModule(mod)}</div>
+                        <div className={styles.itemRight}>
+                          <span>{format(ts, 'MM-dd HH:mm')}</span>
+                          <span className={styles.itemSep}>·</span>
+                          <span className={styles.itemModule} title={mName}>
+                            {mName}
+                          </span>
+                        </div>
                       </button>
                     )
                   })}
@@ -352,4 +472,3 @@ export function SummaryPage() {
     </div>
   )
 }
-
