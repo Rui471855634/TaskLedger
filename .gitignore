@@ -1,0 +1,45 @@
+# --- Dependencies ---
+node_modules/
+**/node_modules/
+
+# --- Build outputs ---
+dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+
+# --- Local caches ---
+.npm-cache/
+**/.npm-cache/
+.vite/
+**/.vite/
+
+# --- TypeScript ---
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# --- Logs ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --- OS / Editors ---
+.DS_Store
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vscode/*
+!.vscode/extensions.json
+
+# --- Env files ---
+.env
+.env.*
+!.env.example
+

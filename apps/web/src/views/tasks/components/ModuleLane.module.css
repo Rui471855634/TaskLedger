@@ -1,0 +1,144 @@
+.lane {
+  width: 340px;
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+.dragging {
+  opacity: 0.7;
+}
+
+.header {
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dragHandle {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  color: rgba(15, 23, 42, 0.6);
+  background: rgba(2, 6, 23, 0.04);
+}
+
+.moduleName {
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headerRight {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.btn,
+.primaryBtn {
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(15, 23, 42, 0.04);
+  color: rgba(15, 23, 42, 0.86);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.primaryBtn {
+  background: rgba(99, 102, 241, 0.18);
+}
+
+.primaryBtn:hover {
+  background: rgba(99, 102, 241, 0.24);
+}
+
+.body {
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.section {
+  padding: 10px 10px 12px;
+  min-height: 0;
+}
+
+.over {
+  outline: 2px dashed rgba(99, 102, 241, 0.45);
+  outline-offset: -4px;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.62);
+  margin-bottom: 8px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.empty {
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.5);
+  padding: 6px 2px;
+}
+
+.doneBlock {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(2, 6, 23, 0.02);
+}
+
+.doneToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  color: rgba(15, 23, 42, 0.78);
+  cursor: pointer;
+}
+
+.doneToggle:hover {
+  background: rgba(2, 6, 23, 0.03);
+}
+
+.doneMeta {
+  color: rgba(15, 23, 42, 0.6);
+  font-size: 12px;
+}
+

@@ -1,0 +1,35 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.28);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.card {
+  width: min(520px, 100%);
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  padding: 18px 18px 16px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.msg {
+  color: rgba(15, 23, 42, 0.86);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.hint {
+  color: rgba(15, 23, 42, 0.62);
+  font-size: 12px;
+}
+

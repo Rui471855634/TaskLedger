@@ -1,0 +1,51 @@
+.shell {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 56px 1fr;
+  background: #f6f7fb;
+  color: rgba(15, 23, 42, 0.92);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.link,
+.active {
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(15, 23, 42, 0.72);
+}
+
+.link:hover {
+  background: rgba(2, 6, 23, 0.04);
+}
+
+.active {
+  background: rgba(99, 102, 241, 0.16);
+  color: rgba(15, 23, 42, 0.92);
+}
+
+.main {
+  min-height: 0;
+  overflow: hidden;
+}
+
