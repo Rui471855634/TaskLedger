@@ -32,6 +32,8 @@ function run(cmd, args, cwd) {
 const args = process.argv.slice(2);
 const versionArgIdx = args.findIndex((a) => a === "--version");
 const version = versionArgIdx >= 0 ? args[versionArgIdx + 1] : null;
+const targetArgIdx = args.findIndex((a) => a === "--target");
+const target = targetArgIdx >= 0 ? args[targetArgIdx + 1] : null; // e.g. "win"
 
 const outRoot = path.join(repoRoot, "out");
 const outDir = path.join(outRoot, "taskledger-release" + (version ? `-${version}` : ""));
@@ -50,16 +52,45 @@ if (!existsDir(distSrc)) {
 const serveSrc = path.join(repoRoot, "tools/serve-dist.mjs");
 const releaseSrc = path.join(repoRoot, "release");
 const userReadmeSrc = path.join(repoRoot, "release/README.md");
+const userReadmeZhSrc = path.join(repoRoot, "release/README.zh-CN.md");
 
 if (!fs.existsSync(serveSrc)) throw new Error(`Missing: ${serveSrc}`);
 if (!existsDir(releaseSrc)) throw new Error(`Missing: ${releaseSrc}`);
 if (!fs.existsSync(userReadmeSrc)) throw new Error(`Missing: ${userReadmeSrc}`);
+if (!fs.existsSync(userReadmeZhSrc)) throw new Error(`Missing: ${userReadmeZhSrc}`);
 
 rimraf(outDir);
 ensureDir(outDir);
 
 // Copy dist
 fs.cpSync(distSrc, path.join(outDir, "dist"), { recursive: true });
+
+// Optionally build Windows exe (no Node required for end-users)
+if (target === "win") {
+  console.log("[bundle] Building Windows server exe (requires Go 1.20+ installed on publisher machine)...");
+  const goCheck = spawnSync("go", ["version"], { cwd: repoRoot, stdio: "inherit", shell: process.platform === "win32" });
+  if (goCheck.status !== 0) {
+    console.error("");
+    console.error("[bundle] Go is required to build taskledger-server.exe for Windows release.");
+    console.error("Install Go (https://go.dev/dl/) and re-run:");
+    console.error("  npm run bundle -- --target win");
+    process.exit(1);
+  }
+  const exeOut = path.join(outDir, "taskledger-server.exe");
+  // Pure Go -> cross-compile should work on macOS/Linux too
+  const env = {
+    ...process.env,
+    GOOS: "windows",
+    GOARCH: "amd64",
+    CGO_ENABLED: "0",
+  };
+  const r = spawnSync(
+    "go",
+    ["build", "-trimpath", "-ldflags", "-s -w", "-o", exeOut, "."],
+    { cwd: path.join(repoRoot, "tools/server-go"), stdio: "inherit", env, shell: process.platform === "win32" }
+  );
+  if (r.status !== 0) process.exit(r.status || 1);
+}
 
 // Copy tools
 ensureDir(path.join(outDir, "tools"));
@@ -70,6 +101,7 @@ fs.cpSync(releaseSrc, path.join(outDir, "release"), { recursive: true });
 
 // Put user guide at zip root for best UX
 fs.copyFileSync(userReadmeSrc, path.join(outDir, "README.md"));
+fs.copyFileSync(userReadmeZhSrc, path.join(outDir, "README.zh-CN.md"));
 
 console.log("");
 console.log("[bundle] Done:");

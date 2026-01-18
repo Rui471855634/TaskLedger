@@ -4,6 +4,8 @@ This folder contains **end-user** instructions and startup scripts intended to b
 
 > Repo root `README.md` is for development.  
 > This `release/README.md` is for users who just downloaded the release zip.
+>
+> Chinese version: see `release/README.zh-CN.md`.
 
 ## What you download
 
