@@ -1,6 +1,8 @@
 ## TaskLedger
 
-Personal task ledger for tracking todo/done and summaries.
+**TaskLedger** is a task management and review tool. Organize work into modules (lanes), drag and drop to reorder and move modules and tasks, and manage Todo/Done status. It also provides daily/weekly/monthly summaries to help you track and reflect on progress over time.
+
+> End-user guide (for GitHub Releases): see `release/README.md`.
 
 ### Monorepo layout
 
