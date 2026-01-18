@@ -33,7 +33,7 @@ const args = process.argv.slice(2);
 const versionArgIdx = args.findIndex((a) => a === "--version");
 const version = versionArgIdx >= 0 ? args[versionArgIdx + 1] : null;
 const targetArgIdx = args.findIndex((a) => a === "--target");
-const target = targetArgIdx >= 0 ? args[targetArgIdx + 1] : null; // e.g. "win"
+const target = targetArgIdx >= 0 ? args[targetArgIdx + 1] : null; // "win" | "mac" | "all"
 
 const outRoot = path.join(repoRoot, "out");
 const outDir = path.join(outRoot, "taskledger-release" + (version ? `-${version}` : ""));
@@ -65,31 +65,41 @@ ensureDir(outDir);
 // Copy dist
 fs.cpSync(distSrc, path.join(outDir, "dist"), { recursive: true });
 
-// Optionally build Windows exe (no Node required for end-users)
-if (target === "win") {
-  console.log("[bundle] Building Windows server exe (requires Go 1.20+ installed on publisher machine)...");
+function ensureGoOrExit() {
   const goCheck = spawnSync("go", ["version"], { cwd: repoRoot, stdio: "inherit", shell: process.platform === "win32" });
-  if (goCheck.status !== 0) {
-    console.error("");
-    console.error("[bundle] Go is required to build taskledger-server.exe for Windows release.");
-    console.error("Install Go (https://go.dev/dl/) and re-run:");
-    console.error("  npm run bundle -- --target win");
-    process.exit(1);
-  }
-  const exeOut = path.join(outDir, "taskledger-server.exe");
-  // Pure Go -> cross-compile should work on macOS/Linux too
-  const env = {
-    ...process.env,
-    GOOS: "windows",
-    GOARCH: "amd64",
-    CGO_ENABLED: "0",
-  };
+  if (goCheck.status === 0) return;
+  console.error("");
+  console.error("[bundle] Go is required to build native binaries (no Node required for end-users).");
+  console.error("Install Go (https://go.dev/dl/) and re-run, or run without --target to build a Node-based bundle.");
+  process.exit(1);
+}
+
+function goBuild({ goos, goarch, outName }) {
+  const outPath = path.join(outDir, outName);
+  const env = { ...process.env, GOOS: goos, GOARCH: goarch, CGO_ENABLED: "0" };
   const r = spawnSync(
     "go",
-    ["build", "-trimpath", "-ldflags", "-s -w", "-o", exeOut, "."],
+    ["build", "-trimpath", "-ldflags", "-s -w", "-o", outPath, "."],
     { cwd: path.join(repoRoot, "tools/server-go"), stdio: "inherit", env, shell: process.platform === "win32" }
   );
   if (r.status !== 0) process.exit(r.status || 1);
+}
+
+// Optionally build native binaries (no Node required for end-users)
+if (target === "win" || target === "mac" || target === "all") {
+  console.log("[bundle] Building native server binaries (requires Go 1.20+ installed on publisher machine)...");
+  ensureGoOrExit();
+}
+
+if (target === "win" || target === "all") {
+  console.log("[bundle] - Windows (amd64)");
+  goBuild({ goos: "windows", goarch: "amd64", outName: "taskledger-server.exe" });
+}
+
+if (target === "mac" || target === "all") {
+  console.log("[bundle] - macOS (arm64 + amd64)");
+  goBuild({ goos: "darwin", goarch: "arm64", outName: "taskledger-server-darwin-arm64" });
+  goBuild({ goos: "darwin", goarch: "amd64", outName: "taskledger-server-darwin-amd64" });
 }
 
 // Copy tools

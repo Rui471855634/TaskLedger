@@ -11,7 +11,9 @@
     "preview": "npm_config_cache=.npm-cache npm run preview -w apps/web",
     "lint": "npm_config_cache=.npm-cache npm run lint -w apps/web",
     "bundle": "node tools/make-release-bundle.mjs",
-    "bundle:win": "node tools/make-release-bundle.mjs --target win"
+    "bundle:win": "node tools/make-release-bundle.mjs --target win",
+    "bundle:mac": "node tools/make-release-bundle.mjs --target mac",
+    "bundle:all": "node tools/make-release-bundle.mjs --target all"
   }
 }
 

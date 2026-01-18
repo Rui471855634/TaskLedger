@@ -17,8 +17,10 @@ The release zip should contain (at minimum):
 
 ## Prerequisite (Windows/macOS)
 
-Install **Node.js 16+** (LTS recommended).  
-After installation, verify in Terminal / PowerShell:
+Windows releases may include a native server binary (`taskledger-server.exe`) so end-users **do not need Node.js**.
+
+macOS releases may include native binaries (`taskledger-server-darwin-*`). If not included, install **Node.js 16+** (LTS recommended).  
+After installation, verify in Terminal:
 
 ```bash
 node -v
