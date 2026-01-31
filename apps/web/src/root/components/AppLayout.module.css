@@ -1,9 +1,9 @@
 .shell {
   height: 100vh;
   display: grid;
-  grid-template-rows: 64px 1fr; /* 增加 Header 高度让空间更舒展 */
-  background: transparent; /* body 已经有背景了 */
-  color: #1e293b;
+  grid-template-rows: 64px 1fr;
+  background: transparent;
+  color: var(--color-text);
 }
 
 .header {
@@ -11,13 +11,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  /* 去掉生硬的 border，改用柔和的投影 */
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--color-header-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  /* 极细的顶部高光边框 */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid var(--color-header-border);
+  box-shadow: 0 4px 20px var(--color-shadow);
   z-index: 10;
 }
 
@@ -25,18 +23,25 @@
   font-weight: 700;
   font-size: 18px;
   letter-spacing: -0.01em;
-  background: linear-gradient(to right, #1e293b, #475569);
+  background: var(--color-brand-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav {
   display: flex;
   gap: 8px;
-  background: rgba(241, 245, 249, 0.5);
+  background: var(--color-nav-bg);
   padding: 4px;
   border-radius: 99px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--color-nav-border);
 }
 
 .link,
@@ -44,22 +49,41 @@
   padding: 6px 16px;
   border-radius: 99px;
   text-decoration: none;
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .link:hover {
-  color: #334155;
-  background: rgba(255, 255, 255, 0.5);
+  color: var(--color-text);
+  background: var(--color-link-hover-bg);
 }
 
 .active {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: var(--color-active-bg);
+  color: var(--color-text-strong);
+  box-shadow: 0 2px 8px var(--color-shadow);
   font-weight: 600;
+}
+
+.themeBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-nav-border);
+  background: var(--color-nav-bg);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s;
+}
+
+.themeBtn:hover {
+  background: var(--color-link-hover-bg);
+  color: var(--color-text);
+  border-color: var(--color-text-secondary);
 }
 
 .main {

@@ -9,29 +9,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 32px 16px; /* 加大间距 */
-  /* 去掉边框，让它看起来是页面的一部分，而不是被切割的区域 */
+  padding: 24px 32px 16px;
   border-bottom: none; 
 }
 
 .title {
   font-weight: 700;
   font-size: 24px;
-  color: #1e293b;
+  color: var(--color-text);
   letter-spacing: -0.02em;
 }
 
 .primaryBtn {
   border: none;
-  /* 黑色/深蓝实心按钮，更具现代感 */
-  background: #1e293b; 
-  color: #ffffff;
+  background: var(--color-text);
+  color: var(--color-card-bg);
   border-radius: 10px;
   padding: 8px 16px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.15);
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -39,22 +37,21 @@
 }
 
 .primaryBtn:hover {
-  background: #334155;
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(30, 41, 59, 0.2);
+  box-shadow: 0 6px 16px var(--color-shadow-strong);
 }
 
 .primaryBtn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(30, 41, 59, 0.1);
+  box-shadow: 0 2px 6px var(--color-shadow);
 }
 
 .boardViewport {
   min-height: 0;
   overflow: auto;
-  /* 优化滚动条样式 */
   scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+  scrollbar-color: color-mix(in srgb, var(--color-text-muted), transparent 70%) transparent;
 }
 
 .boardViewport::-webkit-scrollbar {
@@ -67,16 +64,16 @@
 }
 
 .boardViewport::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.3);
+  background-color: color-mix(in srgb, var(--color-text-muted), transparent 70%);
   border-radius: 99px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 .board {
-  padding: 8px 32px 32px; /* 顶部留少一点，因为 toolbar 已经有下间距 */
+  padding: 8px 32px 32px;
   display: flex;
-  gap: 20px; /* 加大泳道间距 */
+  gap: 20px;
   min-height: 100%;
   width: max-content;
   align-items: flex-start;

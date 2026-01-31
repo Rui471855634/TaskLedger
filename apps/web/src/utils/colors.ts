@@ -1,17 +1,17 @@
-// Pastel / macaron palette (curated; limited choices for a consistent UI)
+// Macaron palette - vibrant yet soft, with better contrast against light backgrounds
 export const MACARON_COLORS = [
-  '#A7D8FF', // baby blue
-  '#B8E2CF', // mint
-  '#FFD6A5', // peach
-  '#FFB4C6', // pink
-  '#C7B8FF', // lavender
-  '#FFE08A', // soft yellow
-  '#AEEBFF', // sky
-  '#BFE6A8', // light green
-  '#FFC2A1', // coral
-  '#B9C7FF', // periwinkle
-  '#F6B8FF', // lilac pink
-  '#BFE9E6', // aqua mint
+  '#5BA4E6', // sky blue (more saturated)
+  '#4ECBA0', // mint green
+  '#F59E5F', // warm peach
+  '#F06F8E', // coral pink
+  '#9B85E8', // soft violet
+  '#E6B84D', // golden yellow
+  '#3CBFDC', // turquoise
+  '#7AC46F', // fresh green
+  '#F07C5C', // salmon coral
+  '#7A8FE8', // periwinkle blue
+  '#D67BE8', // orchid purple
+  '#4FC9C4', // teal
 ]
 
 export function randomModuleColor() {

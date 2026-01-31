@@ -21,7 +21,8 @@ export function TaskCard(props: {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  }
+    '--card-color': props.moduleColor,
+  } as React.CSSProperties
 
   return (
     <div

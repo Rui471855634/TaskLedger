@@ -2,51 +2,53 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 14px 14px; /* 加大内边距 */
-  border-radius: 16px; /* 更大的圆角 */
-  /* 纯白卡片 + 极细的高光边框 */
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 1);
-  /* 柔和阴影 */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02), 0 1px 1px rgba(0, 0, 0, 0.02);
+  padding: 14px 14px;
+  border-radius: 14px;
+  background: var(--color-card-bg);
+  border: 1px solid color-mix(in srgb, var(--card-color), transparent 70%);
+  border-left: 3px solid var(--card-color);
+  box-shadow: 0 2px 8px var(--color-shadow-medium), 0 1px 2px var(--color-shadow);
   cursor: grab;
   position: relative;
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .card:hover {
-  /* hover 时上浮 */
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
-  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--card-color), transparent 80%),
+              0 4px 8px var(--color-shadow-medium);
+  border-color: color-mix(in srgb, var(--card-color), transparent 50%);
+  border-left-color: var(--card-color);
 }
 
 .dragging {
   opacity: 0.9;
   transform: scale(1.03) rotate(1deg);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 40px var(--color-shadow-strong);
   z-index: 100;
   cursor: grabbing;
 }
 
 .completed {
-  opacity: 0.6;
-  background: #f8fafc; /* slate-50 */
+  opacity: 0.65;
+  background: var(--color-card-bg-completed);
   box-shadow: none;
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--card-color), transparent 85%);
+  border-left: 3px solid color-mix(in srgb, var(--card-color), transparent 50%);
 }
 .completed:hover {
-  opacity: 0.8;
-  background: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  opacity: 0.85;
+  background: var(--color-card-bg);
+  box-shadow: 0 2px 8px var(--color-shadow);
+  border-left-color: color-mix(in srgb, var(--card-color), transparent 30%);
 }
 
 .check {
   width: 20px;
   height: 20px;
   padding: 0;
-  border-radius: 50%; /* 圆形 radio */
-  border: 2px solid #cbd5e1; /* slate-300 */
+  border-radius: 50%;
+  border: 2px solid var(--color-text-muted);
   background: transparent;
   display: grid;
   place-items: center;
@@ -56,8 +58,8 @@
 }
 
 .check:hover {
-  border-color: #94a3b8;
-  background: #f1f5f9;
+  border-color: var(--color-text-secondary);
+  background: var(--color-surface-bg);
 }
 
 .completed .check {
@@ -77,42 +79,42 @@
 
 .dotOn {
   transform: scale(1);
-  background: #10b981; /* emerald-500 清新绿 */
-  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+  background: var(--color-success);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-success), transparent 80%);
 }
 
 .topRow {
   display: grid;
-  grid-template-columns: 20px 1fr 24px; /* 调整列宽 */
+  grid-template-columns: 20px 1fr 24px;
   gap: 12px;
   align-items: center;
   min-width: 0;
 }
 
 .title {
-  font-size: 14px; /* 稍微加大字号 */
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
   word-break: break-word;
-  color: #1e293b;
+  color: var(--color-text);
   min-width: 0;
   transition: color 0.2s;
 }
 
 .completed .title {
-  color: #94a3b8;
+  color: var(--color-text-muted);
   text-decoration: line-through;
-  text-decoration-color: #cbd5e1;
+  text-decoration-color: var(--color-text-muted);
 }
 
 .detail {
   font-size: 12px;
-  color: #64748b; /* slate-500 */
+  color: var(--color-text-secondary);
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
   overflow: hidden;
-  margin-left: 32px; /* 20px check + 12px gap */
+  margin-left: 32px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -125,18 +127,17 @@
   display: grid;
   place-items: center;
   cursor: grab;
-  color: #cbd5e1;
+  color: var(--color-text-muted);
   background: transparent;
-  opacity: 0; /* 平时隐藏 */
+  opacity: 0;
   transition: all 0.2s;
 }
 
-/* 只有 hover 卡片时才显示拖拽把手，且 hover 把手时变色 */
 .card:hover .drag {
   opacity: 1;
 }
 
 .drag:hover {
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--color-surface-bg);
+  color: var(--color-text-secondary);
 }

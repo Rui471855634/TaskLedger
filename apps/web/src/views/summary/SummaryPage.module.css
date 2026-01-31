@@ -23,13 +23,13 @@
 .title {
   font-weight: 800;
   font-size: 24px;
-  color: #1e293b;
+  color: var(--color-text);
   letter-spacing: -0.02em;
 }
 
 .subtitle {
   font-size: 13px;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .controls {
@@ -44,16 +44,16 @@
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  background: var(--color-surface-bg);
+  border: 1px solid var(--color-divider);
+  box-shadow: 0 1px 2px var(--color-shadow);
 }
 
 .btn,
 .active {
   border: 0;
   background: transparent;
-  color: #64748b;
+  color: var(--color-text-secondary);
   padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -63,23 +63,22 @@
 }
 
 .btn:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #334155;
+  background: var(--color-divider);
+  color: var(--color-text);
 }
 
 .active {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  background: var(--color-card-bg);
+  color: var(--color-text-strong);
+  box-shadow: 0 1px 3px var(--color-shadow-medium);
 }
 
 .scroller {
   min-height: 0;
   overflow: auto;
   padding: 8px 32px 48px;
-  /* 优化滚动条 */
   scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+  scrollbar-color: color-mix(in srgb, var(--color-text-muted), transparent 70%) transparent;
 }
 .scroller::-webkit-scrollbar {
   width: 8px;
@@ -88,22 +87,21 @@
   background: transparent;
 }
 .scroller::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.3);
+  background-color: color-mix(in srgb, var(--color-text-muted), transparent 70%);
   border-radius: 99px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 .period {
-  /* 毛玻璃卡片风格 */
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--color-divider);
+  background: var(--color-surface-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 8px 32px var(--color-shadow);
 }
 
 .periodHeader {
@@ -112,13 +110,13 @@
   justify-content: space-between;
   gap: 10px;
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+  border-bottom: 1px solid var(--color-divider);
+  background: linear-gradient(to bottom, var(--color-surface-bg), transparent);
 }
 
 .periodLabel {
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text);
   font-size: 16px;
 }
 
@@ -134,9 +132,9 @@
   gap: 4px;
   padding: 4px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  background: #ffffff;
-  color: #1e293b;
+  border: 1px solid var(--color-input-border);
+  background: var(--color-card-bg);
+  color: var(--color-text);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -144,13 +142,13 @@
 }
 
 .actionBtn:hover {
-  background: #f1f5f9;
+  background: var(--color-surface-bg);
   transform: translateY(-1px);
 }
 
 .periodMeta {
   font-size: 13px;
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 
@@ -168,10 +166,9 @@
   gap: 16px;
   padding: 12px 16px;
   border-radius: 12px;
-  /* 纯白卡片 */
-  border: 1px solid rgba(255, 255, 255, 1);
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--color-divider);
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 2px var(--color-shadow);
   cursor: pointer;
   text-align: left;
   transition: all 0.2s;
@@ -179,34 +176,33 @@
 
 .item:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
 }
 
 .itemLeft {
   min-width: 0;
-  flex: 1; /* 弹性伸缩 */
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
-  color: #1e293b;
+  color: var(--color-text);
   font-size: 14px;
 }
 
 .itemRight {
   flex: none;
   font-size: 12px;
-  color: #64748b;
+  color: var(--color-text-secondary);
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #f8fafc;
+  background: var(--color-card-bg-completed);
   padding: 4px 10px;
   border-radius: 6px;
-  max-width: 100%; /* 防止溢出父容器 */
+  max-width: 100%;
 }
 
-/* 新增：限制模块名宽度 */
 .itemModule {
   max-width: 80px;
   overflow: hidden;
@@ -215,23 +211,23 @@
 }
 
 .itemSep {
-  color: #cbd5e1;
+  color: var(--color-text-muted);
 }
 
 .empty {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   padding: 24px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-surface-bg);
   border-radius: 12px;
-  border: 1px dashed rgba(148, 163, 184, 0.3);
+  border: 1px dashed var(--color-text-muted);
 }
 
 .footerHint {
   text-align: center;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   padding: 24px 0 12px;
 }
 
@@ -245,7 +241,7 @@
 .calendarDow {
   font-size: 12px;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   padding: 6px 0;
   text-align: center;
 }
@@ -260,8 +256,8 @@
 .dayCell {
   min-height: 120px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.4); /* 半透明底 */
+  border: 1px solid var(--color-divider);
+  background: var(--color-surface-bg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -269,7 +265,7 @@
 }
 
 .dayCell:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--color-card-bg);
 }
 
 .dayCellDisabled {
@@ -279,9 +275,9 @@
 }
 
 .dayCellToday {
-  background: #ffffff;
-  border-color: rgba(99, 102, 241, 0.2);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.08);
+  background: var(--color-card-bg);
+  border-color: color-mix(in srgb, #6366f1, transparent 80%);
+  box-shadow: 0 8px 20px color-mix(in srgb, #6366f1, transparent 92%);
   position: relative;
   z-index: 1;
 }
@@ -305,20 +301,20 @@
   padding: 4px;
   border-radius: 6px;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   transition: all 0.2s;
 }
 
 .miniActionBtn:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #334155;
+  background: var(--color-divider);
+  color: var(--color-text);
 }
 
 .dayNum {
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-text);
   font-size: 15px;
 }
 
@@ -327,8 +323,8 @@
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 999px;
-  background: #1e293b; /* 黑底白字，高级感 */
-  color: #ffffff;
+  background: var(--color-text);
+  color: var(--color-card-bg);
 }
 
 .dayItems {
@@ -349,30 +345,30 @@
   justify-content: space-between;
   gap: 8px;
   cursor: pointer;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  background: var(--color-card-bg);
+  box-shadow: 0 1px 2px var(--color-shadow-medium);
   transition: all 0.2s;
 }
 
 .pill:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 3px 6px var(--color-shadow-medium);
 }
 
 .pillTitle {
   min-width: 0;
-  flex: 1; /* 弹性伸缩 */
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 500;
   font-size: 12px;
-  color: #1e293b;
+  color: var(--color-text);
 }
 
 .pillRight {
   flex: none;
-  max-width: 80px; /* 限制模块名宽度 */
+  max-width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -380,15 +376,15 @@
   display: flex;
   align-items: center;
   font-size: 10px;
-  color: #64748b;
-  background: #f1f5f9;
+  color: var(--color-text-secondary);
+  background: var(--color-card-bg-completed);
   padding: 1px 4px;
   border-radius: 4px;
 }
 
 .moreHint {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   padding-left: 6px;
   font-weight: 500;
 }

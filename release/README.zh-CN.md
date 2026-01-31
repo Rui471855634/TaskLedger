@@ -22,22 +22,6 @@ Release 压缩包建议至少包含：
 3. 浏览器访问：
    - `http://127.0.0.1:4173`
 
-### Windows：设置开机自启动（当前用户登录后自动启动）
-
-双击（或右键 → 用 PowerShell 运行）：
-
-- `release/windows/install-autostart.ps1`
-
-卸载自启动：
-
-- `release/windows/uninstall-autostart.ps1`
-
-> 如果 PowerShell 禁止脚本执行，可以先运行一次（当前用户）：
->
-> ```powershell
-> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-> ```
-
 ## macOS：启动（目前需要安装 Node.js）
 
 1. 解压 Release 压缩包
@@ -50,19 +34,6 @@ chmod +x release/macos/*.command
 
 3. 浏览器访问：
    - `http://127.0.0.1:4173`
-
-### macOS：开机自启动（当前用户登录后自动启动）
-
-```bash
-chmod +x release/macos/*.command
-./release/macos/install-autostart.command
-```
-
-卸载：
-
-```bash
-./release/macos/uninstall-autostart.command
-```
 
 ## 修改端口 / Host
 

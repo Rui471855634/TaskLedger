@@ -34,22 +34,6 @@ node -v
 3. Open your browser:
    - `http://127.0.0.1:4173`
 
-### Enable auto-start on login (Windows)
-
-Double-click (or right-click → Run with PowerShell):
-
-- `release/windows/install-autostart.ps1`
-
-To uninstall:
-
-- `release/windows/uninstall-autostart.ps1`
-
-> If PowerShell blocks scripts, run this once (current user) and try again:
->
-> ```powershell
-> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-> ```
-
 ## Start (macOS)
 
 1. Unzip the release zip.
@@ -62,21 +46,6 @@ chmod +x release/macos/*.command
 
 3. Open your browser:
    - `http://127.0.0.1:4173`
-
-### Enable auto-start on login (macOS)
-
-Run:
-
-```bash
-chmod +x release/macos/*.command
-./release/macos/install-autostart.command
-```
-
-To uninstall:
-
-```bash
-./release/macos/uninstall-autostart.command
-```
 
 ## Change port / host
 

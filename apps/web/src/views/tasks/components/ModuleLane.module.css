@@ -4,33 +4,34 @@
   flex-direction: column;
   border-radius: 20px;
   
-  /* 纯色背景，基于模块色 */
-  background: color-mix(in srgb, var(--module-color), transparent 92%);
+  /* 更高的颜色浓度，提升辨识度 */
+  background: color-mix(in srgb, var(--module-color), var(--color-card-bg) 82%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   
-  border: 1px solid color-mix(in srgb, var(--module-color), transparent 85%);
+  border: 1px solid color-mix(in srgb, var(--module-color), transparent 60%);
   
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--module-color), transparent 85%),
+              0 2px 4px var(--color-shadow);
   overflow: hidden;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, background 0.3s;
 }
 
 .dragging {
   opacity: 0.8;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 48px var(--color-shadow-strong);
   transform: scale(1.02);
 }
 
 .header {
   padding: 16px 16px 12px;
-  border-bottom: 1px solid color-mix(in srgb, var(--module-color), transparent 95%);
+  border-bottom: 1px solid color-mix(in srgb, var(--module-color), transparent 75%);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  /* 纯色背景，去掉渐变 */
-  background: color-mix(in srgb, var(--module-color), transparent 96%);
+  /* 略深一点的头部背景 */
+  background: color-mix(in srgb, var(--module-color), var(--color-card-bg) 75%);
 }
 
 .headerLeft {
@@ -47,20 +48,20 @@
   display: grid;
   place-items: center;
   cursor: grab;
-  color: color-mix(in srgb, var(--module-color), #64748b 60%);
+  color: color-mix(in srgb, var(--module-color), var(--color-text-secondary) 60%);
   background: transparent;
   transition: all 0.2s;
 }
 
 .dragHandle:hover {
   background: color-mix(in srgb, var(--module-color), transparent 90%);
-  color: #334155;
+  color: var(--color-text);
 }
 
 .moduleName {
   font-weight: 700;
   font-size: 15px;
-  color: #1e293b;
+  color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -78,7 +79,7 @@
   border-radius: 8px;
   border: none;
   background: transparent;
-  color: color-mix(in srgb, var(--module-color), #64748b 70%);
+  color: color-mix(in srgb, var(--module-color), var(--color-text-secondary) 70%);
   padding: 4px 8px;
   cursor: pointer;
   font-size: 13px;
@@ -88,20 +89,20 @@
 
 .btn:hover {
   background: color-mix(in srgb, var(--module-color), transparent 90%);
-  color: #334155;
+  color: var(--color-text);
 }
 
 .primaryBtn {
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #475569;
+  background: var(--color-surface-bg);
+  box-shadow: 0 1px 2px var(--color-shadow);
+  border: 1px solid var(--color-divider);
+  color: var(--color-text-secondary);
 }
 
 .primaryBtn:hover {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  background: var(--color-card-bg);
+  color: var(--color-text-strong);
+  box-shadow: 0 2px 4px var(--color-shadow-medium);
 }
 
 .body {
@@ -112,7 +113,7 @@
   padding-right: 2px;
   max-height: min(70vh, 720px);
   scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.2) transparent;
+  scrollbar-color: color-mix(in srgb, var(--color-text-muted), transparent 80%) transparent;
 }
 
 .body::-webkit-scrollbar {
@@ -123,7 +124,7 @@
   background: transparent;
 }
 .body::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.2);
+  background-color: color-mix(in srgb, var(--color-text-muted), transparent 80%);
   border-radius: 99px;
 }
 
@@ -133,7 +134,7 @@
 }
 
 .over {
-  background: color-mix(in srgb, var(--module-color), transparent 90%);
+  background: color-mix(in srgb, var(--module-color), transparent 75%);
   border-radius: 12px;
 }
 
@@ -141,7 +142,7 @@
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--module-color), #94a3b8 70%);
+  color: color-mix(in srgb, var(--module-color), var(--color-text-secondary) 40%);
   margin-bottom: 10px;
   letter-spacing: 0.05em;
   padding-left: 4px;
@@ -157,16 +158,16 @@
 
 .empty {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   padding: 12px 4px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--color-surface-bg);
   border-radius: 12px;
-  border: 1px dashed color-mix(in srgb, var(--module-color), transparent 85%);
+  border: 1px dashed color-mix(in srgb, var(--module-color), transparent 60%);
 }
 
 .doneBlock {
-  border-top: 1px solid color-mix(in srgb, var(--module-color), transparent 95%);
+  border-top: 1px solid color-mix(in srgb, var(--module-color), transparent 70%);
   background: transparent;
   margin-top: auto;
 }
@@ -179,7 +180,7 @@
   padding: 10px 16px;
   border: 0;
   background: transparent;
-  color: #64748b;
+  color: var(--color-text-secondary);
   cursor: pointer;
   min-height: 42px;
   transition: all 0.2s;
@@ -187,7 +188,7 @@
 
 .doneToggle:hover {
   background: color-mix(in srgb, var(--module-color), transparent 92%);
-  color: #334155;
+  color: var(--color-text);
 }
 
 .doneToggleSticky {
@@ -195,14 +196,13 @@
   bottom: 0;
   margin-right: -2px;
   width: calc(100% + 2px);
-  /* 纯色背景，不透明度高一点以遮挡，但去掉渐变感 */
-  background: color-mix(in srgb, var(--module-color), white 10%); /* 大部分是模块色? 不，这会太深。应该是大部分白 */
-  background: color-mix(in srgb, var(--module-color), rgba(255, 255, 255, 0.95) 90%);
+  /* 与泳道背景一致的颜色 */
+  background: color-mix(in srgb, var(--module-color), var(--color-card-bg) 80%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03);
-  border-top: 1px solid color-mix(in srgb, var(--module-color), transparent 90%);
+  box-shadow: 0 -4px 12px var(--color-shadow);
+  border-top: 1px solid color-mix(in srgb, var(--module-color), transparent 70%);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
@@ -219,14 +219,14 @@
   font-size: 11px;
   padding: 1px 6px;
   border-radius: 6px;
-  color: #94a3b8;
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--color-text-muted);
+  background: var(--color-divider);
   font-weight: 600;
 }
 
 .doneCountActive {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success), transparent 90%);
   border: none;
 }
 
@@ -237,12 +237,12 @@
   display: grid;
   place-items: center;
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--color-text-muted);
   background: transparent;
   transition: all 0.2s;
 }
 
 .doneToggle:hover .doneChevron {
   background: color-mix(in srgb, var(--module-color), transparent 90%);
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
